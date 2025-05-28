@@ -5,16 +5,21 @@ from app.serialize_service import SerializeService
 
 
 def main(book: Book, commands: list[tuple[str, str]]) -> None | str:
+    result = None
     for cmd, method_type in commands:
         if cmd == "display":
             book_service = DisplayService(book)
+            book_service.execute(method_type)
         elif cmd == "print":
             book_service = PrintService(book)
+            book_service.execute(method_type)
         elif cmd == "serialize":
             book_service = SerializeService(book)
+            result = book_service.execute(method_type)
         else:
             raise ValueError(f"Unknown command: {cmd}")
-        return book_service.execute(method_type)
+    if result:
+        return result
 
 
 if __name__ == "__main__":
